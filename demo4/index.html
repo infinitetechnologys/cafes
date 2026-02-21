@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison Dorée — Parisian Luxury Café</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,900;1,400;1,900&family=Jost:wght@200;300;400;500&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8d5a3;
+  --gold-dark: #8b6914;
+  --ivory: #faf8f2;
+  --charcoal: #1a1a1a;
+  --warm-black: #0f0e0b;
+  --blush: #f2e8e0;
+  --deep-red: #6b1a1a;
+  --cream: #f5f0e8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--ivory); color: var(--charcoal); font-family: 'Jost', sans-serif; overflow-x: hidden; cursor: none; }
+
+/* CURSOR */
+#cur { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); box-shadow:0 0 8px rgba(201,168,76,0.6); transition:width .25s,height .25s; }
+#curRing { position:fixed; width:36px; height:36px; border:1px solid var(--gold); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:0.5; transition:none; }
+body:has(a:hover) #cur, body:has(button:hover) #cur { width:14px; height:14px; }
+
+/* ART DECO PATTERNS */
+.deco-top {
+  background: var(--warm-black);
+  padding: 10px 0;
+  text-align: center;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+}
+
+/* INTRO */
+.intro {
+  position: fixed; inset: 0;
+  background: var(--warm-black);
+  z-index: 8000;
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  animation: introSplit 1s cubic-bezier(0.7,0,0.3,1) 3s forwards;
+}
+@keyframes introSplit {
+  to { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); }
+}
+.intro-ornament { font-size: 3rem; color: var(--gold); margin-bottom: 20px; animation: ornamentGlow 2s ease-in-out infinite alternate; }
+@keyframes ornamentGlow { from { text-shadow: 0 0 10px rgba(201,168,76,0.3); } to { text-shadow: 0 0 30px rgba(201,168,76,0.8); } }
+.intro-title { font-family: 'Bodoni Moda', serif; font-size: clamp(3rem,8vw,7rem); color: var(--ivory); letter-spacing: 0.15em; animation: fadeUp 1s 0.5s ease both; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+.intro-sub { font-family: 'Jost', sans-serif; font-size: 0.7rem; letter-spacing: 0.6em; color: var(--gold); margin-top: 12px; animation: fadeUp 1s 1s ease both; }
+.intro-line { width: 0; height: 1px; background: var(--gold); margin: 24px auto; animation: lineGrow 2s 1.5s ease forwards; }
+@keyframes lineGrow { to { width: 200px; } }
+
+/* NAV */
+nav {
+  background: var(--warm-black);
+  padding: 20px 70px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 1000;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+}
+.nav-logo { font-family: 'Bodoni Moda', serif; font-size: 1.6rem; color: var(--ivory); text-decoration: none; letter-spacing: 0.1em; }
+.nav-logo span { color: var(--gold); }
+.nav-center { display:flex; gap:40px; list-style:none; }
+.nav-center a { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(250,248,242,0.6); text-decoration: none; transition: color .3s; }
+.nav-center a:hover { color: var(--gold); }
+.nav-reserve { background: transparent; border: 1px solid var(--gold); color: var(--gold) !important; padding: 10px 28px; transition: all .3s !important; }
+.nav-reserve:hover { background: var(--gold) !important; color: var(--warm-black) !important; }
+
+/* ART DECO HERO */
+.hero {
+  background: var(--warm-black);
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  position: relative; overflow: hidden;
+}
+/* Art Deco geometric overlay */
+.hero-deco {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201,168,76,0.02) 40px, rgba(201,168,76,0.02) 41px),
+    repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(201,168,76,0.02) 40px, rgba(201,168,76,0.02) 41px);
+}
+.hero-left {
+  display: flex; align-items: center; justify-content: center;
+  padding: 100px 60px 60px;
+  position: relative; z-index: 2;
+  border-right: 1px solid rgba(201,168,76,0.15);
+}
+.hero-content { max-width: 520px; }
+.hero-ornament {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px; color: var(--gold);
+}
+.hero-ornament::before, .hero-ornament::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+.hero-ornament::after { background: linear-gradient(90deg, var(--gold), transparent); }
+.hero-ornament span { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; white-space: nowrap; }
+.hero-title {
+  font-family: 'Bodoni Moda', serif;
+  font-size: clamp(3rem,5vw,5.5rem);
+  color: var(--ivory); line-height: 1.1; margin-bottom: 20px;
+}
+.hero-title em { font-style: italic; color: var(--gold); display: block; }
+.hero-subtitle {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic; font-size: 1.1rem;
+  color: rgba(250,248,242,0.55); line-height: 1.9; margin-bottom: 44px;
+  max-width: 420px;
+}
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: var(--gold); color: var(--warm-black);
+  padding: 16px 44px; font-size: 0.72rem; letter-spacing: 0.2em;
+  text-transform: uppercase; text-decoration: none; font-weight: 500;
+  transition: all .4s; position: relative; overflow: hidden;
+}
+.btn-gold::before { content:''; position:absolute; inset:0; background:var(--gold-light); transform:translateX(-100%); transition:transform .4s ease; }
+.btn-gold:hover::before { transform:translateX(0); }
+.btn-gold span { position:relative; z-index:1; }
+.btn-gold-outline {
+  display: inline-flex; align-items: center; gap: 12px;
+  border: 1px solid rgba(250,248,242,0.25); color: rgba(250,248,242,0.7);
+  padding: 15px 44px; font-size: 0.72rem; letter-spacing: 0.2em;
+  text-transform: uppercase; text-decoration: none; transition: all .3s; margin-left: 16px;
+}
+.btn-gold-outline:hover { border-color: var(--gold); color: var(--gold); }
+.hero-actions { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+
+/* HERO RIGHT — 3D ROTATING DISPLAY */
+.hero-right {
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 2; padding: 100px 60px 60px;
+}
+.display-showcase {
+  position: relative; width: 380px; height: 440px;
+}
+.showcase-main {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  animation: showcaseFloat 5s ease-in-out infinite;
+}
+@keyframes showcaseFloat { 0%,100%{transform:translateY(0) rotateY(0deg);} 50%{transform:translateY(-15px) rotateY(6deg);} }
+.showcase-icon { font-size: 9rem; filter: drop-shadow(0 30px 60px rgba(201,168,76,0.3)); }
+.showcase-plate {
+  width: 200px; height: 20px;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.3), transparent 70%);
+  margin-top: 10px; border-radius: 50%;
+  animation: platePulse 3s ease-in-out infinite;
+}
+@keyframes platePulse { 0%,100%{transform:scaleX(1);opacity:0.5;} 50%{transform:scaleX(0.8);opacity:0.3;} }
+/* Floating feature badges */
+.feat-badge {
+  position: absolute;
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+  padding: 10px 16px; border-radius: 4px; text-align: center;
+  animation: badgeFloat ease-in-out infinite alternate;
+  backdrop-filter: blur(10px);
+}
+.feat-badge .fb-num { font-family:'Bodoni Moda',serif; font-size:1.5rem; color:var(--gold); line-height:1; }
+.feat-badge .fb-txt { font-size:0.6rem; letter-spacing:0.2em; color:rgba(250,248,242,0.5); text-transform:uppercase; margin-top:3px; }
+.fb1 { top:60px; left:-40px; animation-duration:3s; }
+.fb2 { top:40%; right:-40px; animation-duration:4s; animation-delay:1s; }
+.fb3 { bottom:80px; left:-20px; animation-duration:5s; animation-delay:2s; }
+@keyframes badgeFloat { from{transform:translateY(0);} to{transform:translateY(-12px);} }
+
+/* GOLD DIVIDER */
+.gold-divider {
+  display: flex; align-items: center; gap: 20px;
+  padding: 30px 70px;
+  background: var(--warm-black);
+  border-top: 1px solid rgba(201,168,76,0.1);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.gd-line { flex:1; height:1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent); }
+.gd-items { display:flex; gap:60px; }
+.gd-item { text-align:center; }
+.gd-item .gn { font-family:'Bodoni Moda',serif; font-size:2rem; color:var(--gold); }
+.gd-item .gl { font-size:0.6rem; letter-spacing:0.25em; color:rgba(250,248,242,0.4); text-transform:uppercase; margin-top:4px; }
+
+/* TASTING NOTES — UNIQUE FEATURE */
+.tasting-section {
+  padding: 120px 70px;
+  background: var(--ivory);
+}
+.section-ornament {
+  text-align:center; margin-bottom:60px;
+}
+.sec-line { display:flex; align-items:center; gap:20px; justify-content:center; margin-bottom:16px; }
+.sec-line::before, .sec-line::after { content:''; width:80px; height:1px; background: linear-gradient(90deg, transparent, var(--gold-dark)); }
+.sec-line::after { background: linear-gradient(90deg, var(--gold-dark), transparent); }
+.sec-line span { font-size:0.65rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--gold-dark); }
+.sec-title { font-family:'Bodoni Moda',serif; font-size:clamp(2.5rem,4vw,4rem); color:var(--charcoal); }
+.sec-title em { font-style:italic; color:var(--gold-dark); }
+
+.tasting-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 32px;
+  max-width: 1200px; margin: 0 auto;
+}
+.tasting-card {
+  background: var(--cream); border: 1px solid rgba(201,168,76,0.15);
+  padding: 48px 36px; text-align: center;
+  position: relative; overflow: hidden; cursor: none;
+  transition: all .5s; transform-style: preserve-3d;
+}
+.tasting-card::before {
+  content: ''; position: absolute;
+  top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0); transition: transform .5s;
+}
+.tasting-card:hover::before { transform: scaleX(1); }
+.tasting-card:hover { transform: translateY(-12px); box-shadow: 0 40px 80px rgba(0,0,0,0.12); background: var(--ivory); }
+.tasting-icon { font-size: 3.5rem; margin-bottom: 20px; display: block; }
+.tasting-name { font-family:'Bodoni Moda',serif; font-size:1.5rem; margin-bottom:12px; }
+.tasting-origin { font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold-dark); margin-bottom:16px; }
+.tasting-desc { font-family:'Libre Baskerville',serif; font-style:italic; font-size:0.95rem; color:rgba(26,26,26,0.65); line-height:1.8; margin-bottom:24px; }
+/* TASTING WHEEL — UNIQUE */
+.taste-wheel { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-bottom:20px; }
+.taste-note {
+  font-size:0.6rem; letter-spacing:0.15em; padding:4px 10px;
+  border: 1px solid rgba(201,168,76,0.3); color:var(--gold-dark);
+  background: rgba(201,168,76,0.06); border-radius:20px;
+}
+/* INTENSITY BAR */
+.intensity { text-align:left; }
+.int-label { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(26,26,26,0.4); margin-bottom:6px; display:flex; justify-content:space-between; }
+.int-bar { height:3px; background:rgba(201,168,76,0.15); border-radius:2px; margin-bottom:8px; overflow:hidden; }
+.int-fill { height:100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold)); border-radius:2px; transition:width 1s ease; }
+.tasting-price { font-family:'Bodoni Moda',serif; font-size:1.8rem; color:var(--gold-dark); margin-top:20px; }
+
+/* RESERVATION WIDGET — UNIQUE FEATURE */
+.reservation-section {
+  padding: 100px 70px;
+  background: var(--warm-black);
+  position: relative; overflow: hidden;
+}
+.reservation-section::before {
+  content:'';
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.06), transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(107,26,26,0.08), transparent 50%);
+}
+.reservation-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  position: relative; z-index: 2;
+}
+.res-left .sec-line::before { background: linear-gradient(90deg, transparent, var(--gold)); }
+.res-left .sec-line::after { background: linear-gradient(90deg, var(--gold), transparent); }
+.res-left .sec-line span { color: var(--gold); }
+.res-title { font-family:'Bodoni Moda',serif; font-size:clamp(2rem,3.5vw,3.2rem); color:var(--ivory); margin-bottom:16px; }
+.res-title em { font-style:italic; color:var(--gold); }
+.res-text { font-family:'Libre Baskerville',serif; font-style:italic; font-size:1rem; color:rgba(250,248,242,0.5); line-height:1.9; margin-bottom:30px; }
+.res-features { list-style:none; display:flex; flex-direction:column; gap:12px; }
+.res-features li { display:flex; align-items:center; gap:12px; font-size:0.82rem; color:rgba(250,248,242,0.6); }
+.res-features li::before { content:'◆'; color:var(--gold); font-size:0.5rem; }
+
+/* BOOKING FORM */
+.booking-form { background:rgba(250,248,242,0.04); border:1px solid rgba(201,168,76,0.2); padding:44px; }
+.booking-form h3 { font-family:'Bodoni Moda',serif; font-size:1.4rem; color:var(--gold); margin-bottom:28px; letter-spacing:0.05em; }
+.form-group { margin-bottom:18px; }
+.form-group label { display:block; font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(250,248,242,0.4); margin-bottom:8px; }
+.form-group input, .form-group select {
+  width:100%; background:rgba(250,248,242,0.06); border:1px solid rgba(201,168,76,0.2);
+  padding:12px 16px; color:var(--ivory); font-family:'Jost',sans-serif; font-size:0.85rem;
+  outline:none; transition:border-color .3s; cursor:none; appearance:none;
+}
+.form-group input:focus, .form-group select:focus { border-color:rgba(201,168,76,0.6); }
+.form-group input::placeholder { color:rgba(250,248,242,0.2); }
+.form-group select option { background:#1a1a1a; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.form-submit {
+  width:100%; padding:16px; background:var(--gold); color:var(--warm-black);
+  border:none; font-family:'Jost',sans-serif; font-size:0.72rem; letter-spacing:0.25em;
+  text-transform:uppercase; font-weight:500; cursor:none; transition:all .3s; margin-top:8px;
+}
+.form-submit:hover { background:var(--gold-light); }
+
+/* MENU — FULL SECTIONS */
+.full-menu {
+  padding: 120px 70px;
+  background: var(--cream);
+}
+.menu-columns { display:grid; grid-template-columns:1fr 1fr; gap:80px; max-width:1200px; margin:60px auto 0; }
+.menu-col-title {
+  font-family:'Bodoni Moda',serif; font-size:1.8rem; margin-bottom:8px;
+  display:flex; align-items:center; gap:16px;
+}
+.menu-col-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg, rgba(201,168,76,0.4), transparent); }
+.menu-col-sub { font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-dark); margin-bottom:30px; }
+.menu-entry { padding:18px 0; border-bottom:1px solid rgba(26,26,26,0.08); display:flex; justify-content:space-between; align-items:flex-start; cursor:none; transition:all .3s; }
+.menu-entry:hover { padding-left:10px; }
+.menu-entry:hover .me-name { color:var(--gold-dark); }
+.me-info { flex:1; }
+.me-name { font-family:'Bodoni Moda',serif; font-size:1.05rem; margin-bottom:4px; }
+.me-desc { font-family:'Libre Baskerville',serif; font-style:italic; font-size:0.82rem; color:rgba(26,26,26,0.5); line-height:1.5; }
+.me-tags { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.me-tag { font-size:0.55rem; letter-spacing:0.15em; padding:3px 8px; background:rgba(201,168,76,0.08); color:var(--gold-dark); border-radius:2px; }
+.me-price { font-family:'Bodoni Moda',serif; font-size:1.2rem; color:var(--gold-dark); flex-shrink:0; margin-left:16px; }
+
+/* EXPERIENCE SECTION */
+.experience {
+  padding: 120px 70px;
+  background: var(--warm-black);
+}
+.exp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; max-width:1200px; margin:60px auto 0; }
+.exp-card {
+  padding:50px 40px; background:rgba(250,248,242,0.02);
+  border:1px solid rgba(201,168,76,0.08);
+  cursor:none; transition:all .5s; position:relative; overflow:hidden;
+}
+.exp-card::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(201,168,76,0.06), transparent);
+  opacity:0; transition:opacity .5s;
+}
+.exp-card:hover::after { opacity:1; }
+.exp-card:hover { border-color:rgba(201,168,76,0.3); transform:translateY(-8px); }
+.exp-num { font-family:'Bodoni Moda',serif; font-size:4rem; color:rgba(201,168,76,0.15); line-height:1; margin-bottom:16px; }
+.exp-icon { font-size:2.5rem; margin-bottom:16px; display:block; }
+.exp-title { font-family:'Bodoni Moda',serif; font-size:1.4rem; color:var(--ivory); margin-bottom:12px; }
+.exp-text { font-family:'Libre Baskerville',serif; font-style:italic; font-size:0.9rem; color:rgba(250,248,242,0.45); line-height:1.8; }
+
+/* PASTRY SHOWCASE */
+.pastry {
+  padding: 100px 70px;
+  background: var(--blush);
+}
+.pastry-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:60px; max-width:1200px; margin-left:auto; margin-right:auto; }
+.pastry-card {
+  background:var(--ivory); border-radius:4px;
+  overflow:hidden; cursor:none; transition:all .4s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.06);
+}
+.pastry-card:hover { transform:translateY(-10px) rotate(1deg); box-shadow:0 20px 50px rgba(0,0,0,0.12); }
+.pastry-top { height:160px; display:flex; align-items:center; justify-content:center; font-size:4.5rem; }
+.pastry-body { padding:20px; }
+.pastry-name { font-family:'Bodoni Moda',serif; font-size:1.1rem; margin-bottom:6px; }
+.pastry-desc { font-size:0.78rem; color:rgba(26,26,26,0.55); line-height:1.5; margin-bottom:12px; }
+.pastry-footer { display:flex; justify-content:space-between; align-items:center; }
+.pastry-price { font-family:'Bodoni Moda',serif; color:var(--gold-dark); font-size:1.1rem; }
+.pastry-badge { font-size:0.55rem; letter-spacing:0.15em; padding:4px 8px; background:rgba(201,168,76,0.1); color:var(--gold-dark); border-radius:2px; }
+
+/* TESTIMONIALS */
+.testimonials {
+  padding: 100px 70px;
+  background: var(--ivory);
+}
+.test-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:30px; max-width:1100px; margin:60px auto 0; }
+.test-card {
+  background:var(--cream); padding:44px; border:1px solid rgba(201,168,76,0.1);
+  position:relative; cursor:none; transition:all .4s;
+}
+.test-card::before { content:'❝'; font-family:'Bodoni Moda',serif; font-size:6rem; color:rgba(201,168,76,0.1); position:absolute; top:-10px; left:20px; line-height:1; }
+.test-card:hover { border-color:rgba(201,168,76,0.4); transform:translateY(-6px); box-shadow:0 20px 60px rgba(0,0,0,0.08); }
+.test-stars { color:var(--gold); font-size:0.9rem; letter-spacing:4px; margin-bottom:20px; }
+.test-text { font-family:'Libre Baskerville',serif; font-style:italic; font-size:1rem; color:rgba(26,26,26,0.7); line-height:1.9; margin-bottom:24px; }
+.test-author { display:flex; align-items:center; gap:14px; }
+.test-av { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--gold-dark),var(--gold)); display:flex; align-items:center; justify-content:center; font-family:'Bodoni Moda',serif; color:var(--ivory); font-size:1rem; }
+.test-name { font-weight:500; font-size:0.88rem; }
+.test-desc { font-size:0.7rem; color:rgba(26,26,26,0.4); margin-top:2px; }
+
+/* LOYALTY / MEMBERSHIP — UNIQUE FEATURE */
+.membership {
+  padding: 100px 70px;
+  background: var(--warm-black);
+  text-align: center;
+}
+.membership-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1000px; margin:60px auto 0; }
+.member-card {
+  padding:48px 32px; border:1px solid rgba(201,168,76,0.15);
+  background:rgba(250,248,242,0.02); position:relative;
+  cursor:none; transition:all .4s; overflow:hidden;
+}
+.member-card.featured { border-color:var(--gold); background:rgba(201,168,76,0.06); }
+.member-card.featured::before { content:'MOST POPULAR'; position:absolute; top:20px; right:-28px; background:var(--gold); color:var(--warm-black); font-size:0.55rem; letter-spacing:0.2em; padding:5px 40px; transform:rotate(45deg); font-weight:500; }
+.member-card:hover { transform:translateY(-10px); box-shadow:0 30px 60px rgba(0,0,0,0.4); }
+.member-tier { font-size:0.6rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; }
+.member-name { font-family:'Bodoni Moda',serif; font-size:2rem; color:var(--ivory); margin-bottom:8px; }
+.member-price { font-family:'Bodoni Moda',serif; font-size:1.2rem; color:rgba(250,248,242,0.4); margin-bottom:32px; }
+.member-price strong { font-size:2.5rem; color:var(--gold); }
+.member-perks { list-style:none; text-align:left; display:flex; flex-direction:column; gap:12px; margin-bottom:36px; }
+.member-perks li { display:flex; gap:12px; font-size:0.82rem; color:rgba(250,248,242,0.6); }
+.member-perks li::before { content:'◆'; color:var(--gold); font-size:0.5rem; flex-shrink:0; margin-top:4px; }
+.member-btn { width:100%; padding:14px; border:1px solid var(--gold); background:transparent; color:var(--gold); font-family:'Jost',sans-serif; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; cursor:none; transition:all .3s; }
+.member-card.featured .member-btn { background:var(--gold); color:var(--warm-black); }
+.member-btn:hover { background:var(--gold); color:var(--warm-black); }
+
+/* FOOTER */
+footer { background:#080806; padding:80px 70px 40px; }
+.footer-deco { text-align:center; margin-bottom:60px; }
+.footer-deco-line { height:1px; background:linear-gradient(90deg,transparent,rgba(201,168,76,0.4),transparent); margin-bottom:30px; }
+.footer-logo-f { font-family:'Bodoni Moda',serif; font-size:2.5rem; color:var(--ivory); letter-spacing:0.2em; }
+.footer-logo-f span { color:var(--gold); }
+.footer-tagline-f { font-family:'Libre Baskerville',serif; font-style:italic; font-size:0.95rem; color:rgba(250,248,242,0.3); margin-top:6px; }
+.footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; margin-bottom:60px; }
+.footer-col h4 { font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:24px; }
+.footer-col p { font-size:0.82rem; color:rgba(250,248,242,0.35); line-height:1.9; }
+.footer-col ul { list-style:none; }
+.footer-col ul li { margin-bottom:12px; }
+.footer-col ul li a { font-size:0.82rem; color:rgba(250,248,242,0.4); text-decoration:none; transition:color .3s; cursor:none; }
+.footer-col ul li a:hover { color:var(--gold); }
+.footer-bottom { border-top:1px solid rgba(201,168,76,0.1); padding-top:30px; display:flex; justify-content:space-between; align-items:center; }
+.footer-bottom p { font-size:0.68rem; color:rgba(250,248,242,0.2); letter-spacing:0.1em; }
+.footer-bottom a { color:var(--gold); text-decoration:none; }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(30px); transition:all .9s ease; }
+.reveal.on { opacity:1; transform:none; }
+
+@media(max-width:1000px) {
+  nav { padding:18px 24px; }
+  .nav-center { display:none; }
+  .hero { grid-template-columns:1fr; }
+  .hero-right { display:none; }
+  .hero-left { padding:100px 24px 60px; }
+  .tasting-grid { grid-template-columns:1fr; }
+  .reservation-inner { grid-template-columns:1fr; }
+  .menu-columns { grid-template-columns:1fr; }
+  .exp-grid { grid-template-columns:1fr; }
+  .pastry-grid { grid-template-columns:repeat(2,1fr); }
+  .test-grid { grid-template-columns:1fr; }
+  .membership-cards { grid-template-columns:1fr; max-width:400px; }
+  .footer-grid { grid-template-columns:1fr 1fr; gap:40px; }
+  .tasting-section,.full-menu,.experience,.pastry,.testimonials,.membership,.reservation-section { padding:80px 24px; }
+  footer { padding:60px 24px 30px; }
+  .gd-items { gap:30px; }
+  .gold-divider { padding:24px; }
+}
+@media(max-width:600px) {
+  .pastry-grid { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr; }
+  .hero-title { font-size:2.8rem; }
+  .gd-items { gap:16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="intro" id="intro">
+  <div class="intro-ornament">✦</div>
+  <div class="intro-title">Maison Dorée</div>
+  <div class="intro-line"></div>
+  <div class="intro-sub">Parisian Café · Est. 1987</div>
+</div>
+
+<div id="cur"></div>
+<div id="curRing"></div>
+
+<div class="deco-top">✦ &nbsp; Open Daily 8:00 — 22:00 &nbsp; · &nbsp; Bandra West, Mumbai &nbsp; · &nbsp; +91 98765 11111 &nbsp; ✦</div>
+
+<nav>
+  <a href="#" class="nav-logo">Maison <span>Dorée</span></a>
+  <ul class="nav-center">
+    <li><a href="#tasting">Our Coffees</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#pastry">Patisserie</a></li>
+    <li><a href="#membership">Membership</a></li>
+    <li><a href="#reserve" class="nav-reserve">Reserve</a></li>
+  </ul>
+  <div style="width:200px"></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-deco"></div>
+  <div class="hero-left">
+    <div class="hero-content">
+      <div class="hero-ornament"><span>Est. 1987 · Paris · Mumbai</span></div>
+      <h1 class="hero-title">
+        L'Art du<br>
+        <em>Café Parfait</em>
+      </h1>
+      <p class="hero-subtitle">
+        A Parisian institution reimagined for Mumbai. Where every cup is a journey through the arrondissements, every pastry a masterpiece of the boulangerie.
+      </p>
+      <div class="hero-actions">
+        <a href="#tasting" class="btn-gold"><span>Discover Our Coffees</span></a>
+        <a href="#reserve" class="btn-gold-outline">Reserve a Table</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="display-showcase">
+      <div class="feat-badge fb1">
+        <div class="fb-num">38</div>
+        <div class="fb-txt">Years Old</div>
+      </div>
+      <div class="feat-badge fb2">
+        <div class="fb-num">4.9★</div>
+        <div class="fb-txt">Rating</div>
+      </div>
+      <div class="feat-badge fb3">
+        <div class="fb-num">12</div>
+        <div class="fb-txt">Origins</div>
+      </div>
+      <div class="showcase-main">
+        <div class="showcase-icon">☕</div>
+        <div class="showcase-plate"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOLD DIVIDER STATS -->
+<div class="gold-divider">
+  <div class="gd-line"></div>
+  <div class="gd-items">
+    <div class="gd-item"><div class="gn">38</div><div class="gl">Years of Excellence</div></div>
+    <div class="gd-item"><div class="gn">12</div><div class="gl">Bean Origins</div></div>
+    <div class="gd-item"><div class="gn">6</div><div class="gl">Master Baristas</div></div>
+    <div class="gd-item"><div class="gn">50K+</div><div class="gl">Cups Served</div></div>
+    <div class="gd-item"><div class="gn">3</div><div class="gl">Michelin Stars (Paris)</div></div>
+  </div>
+  <div class="gd-line"></div>
+</div>
+
+<!-- TASTING NOTES -->
+<section class="tasting-section" id="tasting">
+  <div class="section-ornament">
+    <div class="sec-line"><span>Connoisseur Selection</span></div>
+    <h2 class="sec-title reveal">The <em>Tasting Notes</em></h2>
+  </div>
+  <div class="tasting-grid">
+    <div class="tasting-card reveal">
+      <span class="tasting-icon">🌙</span>
+      <h3 class="tasting-name">Grand Noir</h3>
+      <div class="tasting-origin">Ethiopia · Dark Roast</div>
+      <p class="tasting-desc">A bold espresso with lingering depth, reminiscent of a Parisian midnight.</p>
+      <div class="taste-wheel">
+        <span class="taste-note">Dark Chocolate</span>
+        <span class="taste-note">Tobacco</span>
+        <span class="taste-note">Black Cherry</span>
+        <span class="taste-note">Cedar</span>
+      </div>
+      <div class="intensity">
+        <div class="int-label"><span>Body</span><span>Full</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:90%"></div></div>
+        <div class="int-label"><span>Acidity</span><span>Low</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:20%"></div></div>
+        <div class="int-label"><span>Sweetness</span><span>Medium</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:50%"></div></div>
+      </div>
+      <div class="tasting-price">₹220</div>
+    </div>
+    <div class="tasting-card reveal">
+      <span class="tasting-icon">🌸</span>
+      <h3 class="tasting-name">Rose de Colombie</h3>
+      <div class="tasting-origin">Colombia · Light Roast</div>
+      <p class="tasting-desc">Floral and gentle, like an afternoon in the Luxembourg Gardens in spring.</p>
+      <div class="taste-wheel">
+        <span class="taste-note">Jasmine</span>
+        <span class="taste-note">Peach</span>
+        <span class="taste-note">Honey</span>
+        <span class="taste-note">Bergamot</span>
+      </div>
+      <div class="intensity">
+        <div class="int-label"><span>Body</span><span>Light</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:30%"></div></div>
+        <div class="int-label"><span>Acidity</span><span>Bright</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:80%"></div></div>
+        <div class="int-label"><span>Sweetness</span><span>High</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:75%"></div></div>
+      </div>
+      <div class="tasting-price">₹260</div>
+    </div>
+    <div class="tasting-card reveal">
+      <span class="tasting-icon">🥃</span>
+      <h3 class="tasting-name">Noisette Suisse</h3>
+      <div class="tasting-origin">India · Medium Roast</div>
+      <p class="tasting-desc">Nutty, warm and smooth. The closest thing to a hug in a cup.</p>
+      <div class="taste-wheel">
+        <span class="taste-note">Hazelnut</span>
+        <span class="taste-note">Caramel</span>
+        <span class="taste-note">Brown Sugar</span>
+        <span class="taste-note">Almond</span>
+      </div>
+      <div class="intensity">
+        <div class="int-label"><span>Body</span><span>Medium</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:60%"></div></div>
+        <div class="int-label"><span>Acidity</span><span>Balanced</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:45%"></div></div>
+        <div class="int-label"><span>Sweetness</span><span>High</span></div>
+        <div class="int-bar"><div class="int-fill" style="width:80%"></div></div>
+      </div>
+      <div class="tasting-price">₹240</div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL MENU -->
+<section class="full-menu" id="menu">
+  <div class="section-ornament">
+    <div class="sec-line"><span>La Carte</span></div>
+    <h2 class="sec-title reveal">Our <em>Full Menu</em></h2>
+  </div>
+  <div class="menu-columns">
+    <div>
+      <div class="menu-col-title reveal">Café Chaud <span></span></div>
+      <div class="menu-col-sub">Hot Beverages</div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Café Noisette</div><div class="me-desc">Espresso with a dash of steamed cream</div><div class="me-tags"><span class="me-tag">Signature</span></div></div><div class="me-price">₹180</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Café au Lait</div><div class="me-desc">Equal parts brewed coffee and hot milk</div></div><div class="me-price">₹200</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Café Viennois</div><div class="me-desc">Espresso topped with handcrafted whipped cream</div><div class="me-tags"><span class="me-tag">Bestseller</span></div></div><div class="me-price">₹240</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Chocolat Chaud</div><div class="me-desc">Rich Valrhona dark chocolate, whole milk, vanilla</div></div><div class="me-price">₹260</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Thé à la Menthe</div><div class="me-desc">Moroccan-style fresh mint tea with honey</div></div><div class="me-price">₹160</div></div>
+
+      <div class="menu-col-title reveal" style="margin-top:40px">Café Froid <span></span></div>
+      <div class="menu-col-sub">Cold Beverages</div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Cold Brew Français</div><div class="me-desc">20-hour steep, served with citrus zest</div><div class="me-tags"><span class="me-tag">New</span></div></div><div class="me-price">₹270</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Café Glacé</div><div class="me-desc">Double espresso over hand-cut ice, condensed milk</div></div><div class="me-price">₹230</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Limonade Maison</div><div class="me-desc">House lemonade, lavender syrup, sparkling water</div></div><div class="me-price">₹200</div></div>
+    </div>
+    <div>
+      <div class="menu-col-title reveal">Pâtisserie <span></span></div>
+      <div class="menu-col-sub">Pastries & Sweets</div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Croissant au Beurre</div><div class="me-desc">27 layers of hand-laminated butter pastry, baked 5am</div><div class="me-tags"><span class="me-tag">Signature</span><span class="me-tag">Fresh Daily</span></div></div><div class="me-price">₹160</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Tarte Citron</div><div class="me-desc">Crisp shell, lemon curd, Italian meringue</div></div><div class="me-price">₹280</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Éclair au Chocolat</div><div class="me-desc">Choux pastry, dark chocolate ganache, gold leaf</div><div class="me-tags"><span class="me-tag">Bestseller</span></div></div><div class="me-price">₹220</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Mille-Feuille</div><div class="me-desc">Caramelised puff pastry, vanilla crème, fondant</div></div><div class="me-price">₹320</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Macarons (4 pcs)</div><div class="me-desc">Rotating flavours: pistachio, rose, salted caramel, raspberry</div><div class="me-tags"><span class="me-tag">Seasonal</span></div></div><div class="me-price">₹300</div></div>
+
+      <div class="menu-col-title reveal" style="margin-top:40px">Petit Déjeuner <span></span></div>
+      <div class="menu-col-sub">Breakfast (Until 12pm)</div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Le Grand Plateau</div><div class="me-desc">Croissant, baguette, two cheeses, charcuterie, jam, butter</div><div class="me-tags"><span class="me-tag">For Two</span></div></div><div class="me-price">₹680</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Oeufs Bénédicte</div><div class="me-desc">Poached eggs, hollandaise, smoked salmon, brioche</div></div><div class="me-price">₹420</div></div>
+      <div class="menu-entry"><div class="me-info"><div class="me-name">Avocado Tartine</div><div class="me-desc">Sourdough, avocado, poached egg, truffle oil, microgreens</div></div><div class="me-price">₹380</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="section-ornament" style="color:var(--ivory)">
+    <div class="sec-line" style="justify-content:center">
+      <span style="color:var(--gold)">L'Expérience</span>
+    </div>
+    <h2 class="sec-title reveal" style="color:var(--ivory)">More Than <em>Coffee</em></h2>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-card reveal">
+      <div class="exp-num">01</div>
+      <span class="exp-icon">🎵</span>
+      <h3 class="exp-title">Live Jazz Evenings</h3>
+      <p class="exp-text">Every Friday and Saturday from 7pm, our resident jazz quartet transforms the café into a Parisian salon. Reserve a table early — they fill up fast.</p>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-num">02</div>
+      <span class="exp-icon">🎨</span>
+      <h3 class="exp-title">Latte Art Classes</h3>
+      <p class="exp-text">Join our master barista every Sunday morning for a 2-hour latte art workshop. Learn the tulip, rosette, and swan — and take your creation home.</p>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-num">03</div>
+      <span class="exp-icon">🧑‍🍳</span>
+      <h3 class="exp-title">Patisserie Workshops</h3>
+      <p class="exp-text">Learn to craft croissants and macarons with our head patissier, Chef Laurent. Small groups, big skills. Every second Tuesday.</p>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-num">04</div>
+      <span class="exp-icon">📚</span>
+      <h3 class="exp-title">Private Tastings</h3>
+      <p class="exp-text">Book a private cupping session for your team or group. Journey through 6 origins with our sommelier, pairing each bean with a macaron.</p>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-num">05</div>
+      <span class="exp-icon">🎁</span>
+      <h3 class="exp-title">Gift Experiences</h3>
+      <p class="exp-text">Give the gift of Maison Dorée. Our artisan gift boxes include single-origin beans, macarons, and an experience voucher. Ships across India.</p>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-num">06</div>
+      <span class="exp-icon">🏢</span>
+      <h3 class="exp-title">Corporate Events</h3>
+      <p class="exp-text">Hire our private dining room for up to 30 guests. Coffee catering, full patisserie spread, and a barista on-site for your event.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PASTRY -->
+<section class="pastry" id="pastry">
+  <div class="section-ornament">
+    <div class="sec-line"><span>La Patisserie</span></div>
+    <h2 class="sec-title reveal">Today's <em>Showcase</em></h2>
+  </div>
+  <div class="pastry-grid">
+    <div class="pastry-card reveal">
+      <div class="pastry-top" style="background:linear-gradient(135deg,#fef9e7,#fce5c0)">🥐</div>
+      <div class="pastry-body"><div class="pastry-name">Croissant au Beurre</div><div class="pastry-desc">27-layer hand-laminated, baked 5am daily</div><div class="pastry-footer"><span class="pastry-price">₹160</span><span class="pastry-badge">Fresh</span></div></div>
+    </div>
+    <div class="pastry-card reveal">
+      <div class="pastry-top" style="background:linear-gradient(135deg,#fde8d8,#f5c6a0)">🥧</div>
+      <div class="pastry-body"><div class="pastry-name">Tarte Citron</div><div class="pastry-desc">Lemon curd, Italian meringue torched</div><div class="pastry-footer"><span class="pastry-price">₹280</span><span class="pastry-badge">Chef's Pick</span></div></div>
+    </div>
+    <div class="pastry-card reveal">
+      <div class="pastry-top" style="background:linear-gradient(135deg,#2d1b1b,#5a2d2d)">🍫</div>
+      <div class="pastry-body"><div class="pastry-name">Éclair au Chocolat</div><div class="pastry-desc">Dark Valrhona ganache, choux, gold leaf</div><div class="pastry-footer"><span class="pastry-price">₹220</span><span class="pastry-badge">Bestseller</span></div></div>
+    </div>
+    <div class="pastry-card reveal">
+      <div class="pastry-top" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)">🌸</div>
+      <div class="pastry-body"><div class="pastry-name">Macaron Rose</div><div class="pastry-desc">Lychee & raspberry ganache, 4 per box</div><div class="pastry-footer"><span class="pastry-price">₹300</span><span class="pastry-badge">Seasonal</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-ornament">
+    <div class="sec-line"><span>Nos Clients</span></div>
+    <h2 class="sec-title reveal">What Our <em>Guests Say</em></h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"The Grand Noir is extraordinary. I've had espresso in Rome, Paris, and Tokyo — Maison Dorée belongs in that conversation without question."</p>
+      <div class="test-author"><div class="test-av">A</div><div><div class="test-name">Aryan Kapoor</div><div class="test-desc">Coffee Journalist</div></div></div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"The Friday jazz evenings have become sacred to us. The croissants are the real deal — my Parisian wife was moved to tears by the first bite."</p>
+      <div class="test-author"><div class="test-av">M</div><div><div class="test-name">Marc Beaumont</div><div class="test-desc">Regular Guest</div></div></div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"We booked the private tasting for our team offsite. Chef Laurent is a genius. Everyone left knowing infinitely more about coffee — and deeply happy."</p>
+      <div class="test-author"><div class="test-av">S</div><div><div class="test-name">Sunita Mehta</div><div class="test-desc">Startup Founder</div></div></div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"The Mille-Feuille is the best thing I have ever eaten in Mumbai. I drive 40 minutes on weekends just for this and the Café Viennois."</p>
+      <div class="test-author"><div class="test-av">P</div><div><div class="test-name">Preethi Rajan</div><div class="test-desc">Food Writer</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="membership" id="membership">
+  <div class="section-ornament">
+    <div class="sec-line" style="justify-content:center"><span style="color:var(--gold)">Membership</span></div>
+    <h2 class="sec-title reveal" style="color:var(--ivory)">Join the <em>Maison</em></h2>
+  </div>
+  <div class="membership-cards">
+    <div class="member-card reveal">
+      <div class="member-tier">✦ Tier One</div>
+      <div class="member-name">Café</div>
+      <div class="member-price"><strong>₹499</strong>/month</div>
+      <ul class="member-perks">
+        <li>10% off all orders</li>
+        <li>Priority seating</li>
+        <li>1 free drip coffee daily</li>
+        <li>Monthly cupping invite</li>
+        <li>Birthday treat</li>
+      </ul>
+      <button class="member-btn" onclick="joinMembership('Café')">Join Café</button>
+    </div>
+    <div class="member-card featured reveal">
+      <div class="member-tier">✦ Tier Two</div>
+      <div class="member-name">Brasserie</div>
+      <div class="member-price"><strong>₹999</strong>/month</div>
+      <ul class="member-perks">
+        <li>20% off all orders</li>
+        <li>Reserved table guaranteed</li>
+        <li>Unlimited filter coffee</li>
+        <li>Free pastry every visit</li>
+        <li>Early access to events</li>
+        <li>Quarterly gift box</li>
+        <li>Jazz evening fast pass</li>
+      </ul>
+      <button class="member-btn" onclick="joinMembership('Brasserie')">Join Brasserie</button>
+    </div>
+    <div class="member-card reveal">
+      <div class="member-tier">✦ Tier Three</div>
+      <div class="member-name">Maison</div>
+      <div class="member-price"><strong>₹2,499</strong>/month</div>
+      <ul class="member-perks">
+        <li>All Brasserie perks</li>
+        <li>Private dining room access</li>
+        <li>Monthly tasting with Chef</li>
+        <li>Free workshops included</li>
+        <li>Dedicated concierge</li>
+        <li>Annual Paris coffee tour</li>
+      </ul>
+      <button class="member-btn" onclick="joinMembership('Maison')">Join Maison</button>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section class="reservation-section" id="reserve">
+  <div class="reservation-inner">
+    <div class="res-left">
+      <div class="sec-line" style="justify-content:flex-start"><span>Réservation</span></div>
+      <h2 class="res-title">Reserve Your <em>Table</em></h2>
+      <p class="res-text">We recommend booking 48 hours in advance, especially for weekend evenings and jazz nights. Walk-ins welcome for up to 2 guests.</p>
+      <ul class="res-features">
+        <li>Complimentary amuse-bouche on arrival</li>
+        <li>Special occasion arrangements available</li>
+        <li>Jazz evenings Fri & Sat from 7pm</li>
+        <li>Private dining room for groups up to 30</li>
+        <li>Dietary requirements always accommodated</li>
+        <li>Outdoor terrace seating available</li>
+      </ul>
+    </div>
+    <div class="booking-form">
+      <h3>✦ Make a Reservation</h3>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jean"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Dupont"></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@email.com"></div>
+      <div class="form-group"><label>Phone</label><input type="tel" placeholder="+91 98765 43210"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Date</label><input type="date"></div>
+        <div class="form-group"><label>Time</label>
+          <select>
+            <option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option>
+            <option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option>
+            <option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option>
+            <option>5:00 PM</option><option>6:00 PM</option><option>7:00 PM</option>
+            <option>8:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Guests</label><select><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></div>
+        <div class="form-group"><label>Occasion</label><select><option>Regular Visit</option><option>Birthday</option><option>Anniversary</option><option>Business</option><option>Jazz Evening</option></select></div>
+      </div>
+      <button class="form-submit" onclick="submitReservation()">Confirm Reservation ✦</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-deco">
+    <div class="footer-deco-line"></div>
+    <div class="footer-logo-f">Maison <span>Dorée</span></div>
+    <div class="footer-tagline-f">L'Art du Café Parfait · Est. 1987</div>
+  </div>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>About</h4>
+      <p>Born in Paris in 1987, reimagined for Mumbai in 2019. Maison Dorée is a sanctuary for those who believe coffee is a civilised pleasure, not a commodity.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="#">Hot Beverages</a></li>
+        <li><a href="#">Cold Beverages</a></li>
+        <li><a href="#">Patisserie</a></li>
+        <li><a href="#">Petit Déjeuner</a></li>
+        <li><a href="#">Lunch</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Experience</h4>
+      <ul>
+        <li><a href="#">Jazz Evenings</a></li>
+        <li><a href="#">Latte Art Classes</a></li>
+        <li><a href="#">Patisserie Workshops</a></li>
+        <li><a href="#">Private Tastings</a></li>
+        <li><a href="#">Gift Boxes</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit</h4>
+      <ul>
+        <li><a href="#">24 Rue de Bandra, Mumbai</a></li>
+        <li><a href="#">Mon–Fri: 8am–10pm</a></li>
+        <li><a href="#">Sat–Sun: 9am–11pm</a></li>
+        <li><a href="#">+91 98765 11111</a></li>
+        <li><a href="#">bonjour@maisondoree.in</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Maison Dorée. All rights reserved. ✦ Crafted with French precision.</p>
+    <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a> · <a href="#">Careers</a></p>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cur');
+const ring = document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+
+// SCROLL REVEAL
+const ro = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// MEMBERSHIP BUTTONS
+function joinMembership(tier){
+  alert(`✦ Thank you for choosing ${tier} membership!\n\nYou'll receive a confirmation email within 24 hours. Bienvenue à Maison Dorée.`);
+}
+
+// RESERVATION FORM
+function submitReservation(){
+  const btn = document.querySelector('.form-submit');
+  btn.textContent = '✦ Reservation Confirmed!';
+  btn.style.background = '#2d4a2a';
+  btn.style.color = '#faf8f2';
+  setTimeout(()=>{ btn.textContent='Confirm Reservation ✦'; btn.style.background=''; btn.style.color=''; },3000);
+}
+
+// TASTING CARD 3D TILT
+document.querySelectorAll('.tasting-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-0.5;
+    const y=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform=`translateY(-12px) rotateX(${y*-8}deg) rotateY(${x*8}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
+});
+
+// INTRO
+setTimeout(()=>{ document.getElementById('intro').style.display='none'; },4000);
+</script>
+</body>
+</html>

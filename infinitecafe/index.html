@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Café - Where Time Meets Taste</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Cormorant+Garamond:wght@300;400;500&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #FFF8F0;
+            --dark-brown: #2C1810;
+            --coffee: #6B4423;
+            --gold: #D4AF37;
+            --warm-gray: #C8B8A8;
+            --accent: #E8D5C4;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: var(--cream);
+            color: var(--dark-brown);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .app {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .coffee-bean {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--coffee);
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(-45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(315deg);
+                opacity: 0;
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 248, 240, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(107, 68, 35, 0.1);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--dark-brown);
+            letter-spacing: -1px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .logo::after {
+            content: '∞';
+            position: absolute;
+            top: -10px;
+            right: -20px;
+            font-size: 1.2rem;
+            color: var(--gold);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--coffee);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 90px;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--accent) 100%);
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 900;
+            color: var(--dark-brown);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .hero-subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            color: var(--coffee);
+            font-style: italic;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--dark-brown);
+            color: var(--cream);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--gold);
+            transition: width 0.5s ease, height 0.5s ease;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--dark-brown);
+            border: 2px solid var(--dark-brown);
+        }
+
+        .btn-secondary:hover {
+            background: var(--dark-brown);
+            color: var(--cream);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--dark-brown);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--gold);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--coffee);
+            margin-bottom: 4rem;
+            font-style: italic;
+        }
+
+        /* Menu Grid */
+        .menu-categories {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid var(--coffee);
+            color: var(--coffee);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: var(--coffee);
+            color: var(--cream);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .menu-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 0;
+            border: 1px solid rgba(107, 68, 35, 0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(44, 24, 16, 0.15);
+            border-color: var(--gold);
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--dark-brown);
+            font-weight: 600;
+        }
+
+        .menu-item-price {
+            font-size: 1.4rem;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .menu-item-description {
+            color: var(--coffee);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--accent);
+            color: var(--dark-brown);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .add-to-cart {
+            padding: 0.6rem 1.5rem;
+            background: var(--dark-brown);
+            color: var(--cream);
+            border: none;
+            cursor: pointer;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: var(--gold);
+            color: var(--dark-brown);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border: 1px solid rgba(107, 68, 35, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(212, 175, 55, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+            border-color: var(--gold);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark-brown);
+        }
+
+        .feature-card p {
+            font-size: 1.1rem;
+            color: var(--coffee);
+            line-height: 1.6;
+        }
+
+        /* Reservation Form */
+        .reservation-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border: 1px solid rgba(107, 68, 35, 0.15);
+            box-shadow: 0 10px 40px rgba(44, 24, 16, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: var(--dark-brown);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(107, 68, 35, 0.2);
+            background: var(--cream);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            color: var(--dark-brown);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Cart */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gold);
+            color: var(--dark-brown);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            transition: right 0.4s ease;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 2rem;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--dark-brown);
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--dark-brown);
+        }
+
+        .cart-items {
+            padding: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--accent);
+        }
+
+        .cart-item-info h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--dark-brown);
+            margin-bottom: 0.3rem;
+        }
+
+        .cart-item-price {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: var(--coffee);
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .cart-footer {
+            padding: 2rem;
+            border-top: 2px solid var(--accent);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--dark-brown);
+            color: var(--cream);
+            border: none;
+            font-size: 1.2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background: var(--gold);
+            color: var(--dark-brown);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-brown);
+            color: var(--cream);
+            padding: 4rem 2rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--warm-gray);
+            text-decoration: none;
+            line-height: 2;
+            font-size: 1.05rem;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--gold);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            color: var(--dark-brown);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--cream);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(200, 184, 168, 0.3);
+            color: var(--warm-gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.5rem;
+            color: var(--coffee);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--coffee);
+        }
+
+        .empty-cart p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Menu Data
+        const menuData = {
+            coffee: [
+                { id: 1, name: 'Espresso Infinito', price: 3.50, description: 'Rich double shot with notes of dark chocolate and caramel', tag: 'Popular' },
+                { id: 2, name: 'Cappuccino Eterno', price: 4.75, description: 'Perfectly balanced with microfoam and a hint of vanilla', tag: 'Signature' },
+                { id: 3, name: 'Cold Brew Cosmos', price: 5.25, description: '24-hour steeped with smooth, bold flavors', tag: 'New' },
+                { id: 4, name: 'Latte Lumière', price: 4.50, description: 'Silky espresso with steamed milk and latte art', tag: 'Classic' },
+                { id: 5, name: 'Mocha Mystique', price: 5.50, description: 'Espresso with dark chocolate and whipped cream', tag: 'Indulgent' },
+                { id: 6, name: 'Flat White Infinite', price: 4.25, description: 'Ristretto shots with velvety microfoam', tag: 'Popular' }
+            ],
+            pastries: [
+                { id: 7, name: 'Croissant Céleste', price: 4.00, description: 'Buttery, flaky layers with a golden crust', tag: 'Fresh Daily' },
+                { id: 8, name: 'Chocolate Éclair', price: 5.50, description: 'Light choux pastry with rich chocolate glaze', tag: 'Signature' },
+                { id: 9, name: 'Almond Tart', price: 6.00, description: 'Sweet almond cream in shortcrust pastry', tag: 'House Made' },
+                { id: 10, name: 'Cinnamon Roll', price: 4.75, description: 'Soft spiral with cream cheese frosting', tag: 'Popular' },
+                { id: 11, name: 'Blueberry Muffin', price: 3.75, description: 'Moist muffin bursting with fresh blueberries', tag: 'Healthy' },
+                { id: 12, name: 'Pain au Chocolat', price: 4.25, description: 'Flaky pastry with premium dark chocolate', tag: 'Classic' }
+            ],
+            beverages: [
+                { id: 13, name: 'Matcha Zen', price: 5.50, description: 'Ceremonial grade matcha with oat milk', tag: 'Wellness' },
+                { id: 14, name: 'Chai Infinity', price: 4.75, description: 'Spiced tea blend with steamed milk', tag: 'Warming' },
+                { id: 15, name: 'Golden Turmeric Latte', price: 5.25, description: 'Anti-inflammatory blend with honey', tag: 'Healthy' },
+                { id: 16, name: 'Iced Hibiscus Tea', price: 4.00, description: 'Refreshing floral tea with citrus notes', tag: 'Refreshing' },
+                { id: 17, name: 'Hot Chocolate Luxe', price: 5.50, description: 'Belgian chocolate with whipped cream', tag: 'Indulgent' },
+                { id: 18, name: 'Fresh Orange Juice', price: 4.50, description: 'Squeezed to order, pure and natural', tag: 'Fresh' }
+            ],
+            food: [
+                { id: 19, name: 'Avocado Toast Supreme', price: 9.50, description: 'Sourdough with avocado, poached egg, feta', tag: 'Brunch' },
+                { id: 20, name: 'Infinity Breakfast Bowl', price: 11.00, description: 'Granola, yogurt, seasonal fruits, honey', tag: 'Healthy' },
+                { id: 21, name: 'Smoked Salmon Bagel', price: 10.50, description: 'Everything bagel, cream cheese, capers, red onion', tag: 'Signature' },
+                { id: 22, name: 'Mediterranean Wrap', price: 9.00, description: 'Grilled vegetables, hummus, feta in whole wheat', tag: 'Vegetarian' },
+                { id: 23, name: 'Club Sandwich Deluxe', price: 11.50, description: 'Triple decker with turkey, bacon, avocado', tag: 'Hearty' },
+                { id: 24, name: 'Caesar Salad', price: 8.50, description: 'Crisp romaine, parmesan, house-made dressing', tag: 'Light' }
+            ]
+        };
+
+        // Background Animation Component
+        const BackgroundAnimation = () => {
+            const beans = Array.from({ length: 15 }, (_, i) => ({
+                id: i,
+                left: `${Math.random() * 100}%`,
+                delay: `${Math.random() * 10}s`,
+                duration: `${15 + Math.random() * 10}s`
+            }));
+
+            return (
+                <div className="background-animation">
+                    {beans.map(bean => (
+                        <div
+                            key={bean.id}
+                            className="coffee-bean"
+                            style={{
+                                left: bean.left,
+                                animationDelay: bean.delay,
+                                animationDuration: bean.duration
+                            }}
+                        />
+                    ))}
+                </div>
+            );
+        };
+
+        // Navigation Component
+        const Navigation = ({ onNavigate, cartCount, onCartToggle }) => {
+            return (
+                <nav className="navbar">
+                    <div className="nav-container">
+                        <div className="logo" onClick={() => onNavigate('home')}>Infinite Café</div>
+                        <ul className="nav-links">
+                            <li><a onClick={() => onNavigate('home')}>Home</a></li>
+                            <li><a onClick={() => onNavigate('menu')}>Menu</a></li>
+                            <li><a onClick={() => onNavigate('reservations')}>Reservations</a></li>
+                            <li><a onClick={() => onNavigate('about')}>About</a></li>
+                            <li>
+                                <a className="cart-icon" onClick={onCartToggle}>
+                                    🛒
+                                    {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            );
+        };
+
+        // Hero Section
+        const Hero = ({ onNavigate }) => {
+            return (
+                <section className="hero">
+                    <div className="hero-content">
+                        <h1>Infinite Café</h1>
+                        <p className="hero-subtitle">Where Time Meets Taste • Endless Moments of Perfection</p>
+                        <div className="cta-buttons">
+                            <button className="btn btn-primary" onClick={() => onNavigate('menu')}>Explore Menu</button>
+                            <button className="btn btn-secondary" onClick={() => onNavigate('reservations')}>Book a Table</button>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Menu Component
+        const Menu = ({ onAddToCart }) => {
+            const [selectedCategory, setSelectedCategory] = useState('coffee');
+
+            return (
+                <section className="section">
+                    <h2 className="section-title">Our Menu</h2>
+                    <p className="section-subtitle">Crafted with passion, served with love</p>
+                    
+                    <div className="menu-categories">
+                        <button 
+                            className={`category-btn ${selectedCategory === 'coffee' ? 'active' : ''}`}
+                            onClick={() => setSelectedCategory('coffee')}
+                        >
+                            Coffee
+                        </button>
+                        <button 
+                            className={`category-btn ${selectedCategory === 'pastries' ? 'active' : ''}`}
+                            onClick={() => setSelectedCategory('pastries')}
+                        >
+                            Pastries
+                        </button>
+                        <button 
+                            className={`category-btn ${selectedCategory === 'beverages' ? 'active' : ''}`}
+                            onClick={() => setSelectedCategory('beverages')}
+                        >
+                            Beverages
+                        </button>
+                        <button 
+                            className={`category-btn ${selectedCategory === 'food' ? 'active' : ''}`}
+                            onClick={() => setSelectedCategory('food')}
+                        >
+                            Food
+                        </button>
+                    </div>
+
+                    <div className="menu-grid">
+                        {menuData[selectedCategory].map(item => (
+                            <div key={item.id} className="menu-item">
+                                <div className="menu-item-header">
+                                    <h3>{item.name}</h3>
+                                    <span className="menu-item-price">${item.price.toFixed(2)}</span>
+                                </div>
+                                <p className="menu-item-description">{item.description}</p>
+                                <div className="menu-item-footer">
+                                    <span className="item-tag">{item.tag}</span>
+                                    <button className="add-to-cart" onClick={() => onAddToCart(item)}>
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        // Features Component
+        const Features = () => {
+            return (
+                <section className="section" style={{ background: 'white' }}>
+                    <h2 className="section-title">Why Choose Infinite</h2>
+                    <p className="section-subtitle">Experience excellence in every detail</p>
+                    
+                    <div className="features-grid">
+                        <div className="feature-card">
+                            <div className="feature-icon">☕</div>
+                            <h3>Premium Coffee</h3>
+                            <p>Single-origin beans from sustainable farms, roasted to perfection daily</p>
+                        </div>
+                        <div className="feature-card">
+                            <div className="feature-icon">🥐</div>
+                            <h3>Fresh Pastries</h3>
+                            <p>Handcrafted by our expert bakers every morning using finest ingredients</p>
+                        </div>
+                        <div className="feature-card">
+                            <div className="feature-icon">🌿</div>
+                            <h3>Sustainable</h3>
+                            <p>Committed to eco-friendly practices and supporting local communities</p>
+                        </div>
+                        <div className="feature-card">
+                            <div className="feature-icon">💝</div>
+                            <h3>Cozy Atmosphere</h3>
+                            <p>Perfect space for work, meetings, or relaxing with friends</p>
+                        </div>
+                        <div className="feature-card">
+                            <div className="feature-icon">⚡</div>
+                            <h3>Fast WiFi</h3>
+                            <p>High-speed internet and plenty of power outlets for digital nomads</p>
+                        </div>
+                        <div className="feature-card">
+                            <div className="feature-icon">🎵</div>
+                            <h3>Live Music</h3>
+                            <p>Enjoy live performances from local artists every weekend</p>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Reservations Component
+        const Reservations = () => {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                phone: '',
+                date: '',
+                time: '',
+                guests: '2',
+                message: ''
+            });
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                alert(`Reservation submitted for ${formData.name} on ${formData.date} at ${formData.time} for ${formData.guests} guests. We'll confirm via email shortly!`);
+            };
+
+            const handleChange = (e) => {
+                setFormData({
+                    ...formData,
+                    [e.target.name]: e.target.value
+                });
+            };
+
+            return (
+                <section className="section">
+                    <h2 className="section-title">Reserve Your Table</h2>
+                    <p className="section-subtitle">Book your perfect moment at Infinite Café</p>
+                    
+                    <form className="reservation-form" onSubmit={handleSubmit}>
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label>Full Name</label>
+                                <input 
+                                    type="text" 
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required 
+                                    placeholder="John Doe"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Email Address</label>
+                                <input 
+                                    type="email" 
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required 
+                                    placeholder="john@example.com"
+                                />
+                            </div>
+                        </div>
+                        
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label>Phone Number</label>
+                                <input 
+                                    type="tel" 
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    required 
+                                    placeholder="+1 (555) 123-4567"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Number of Guests</label>
+                                <select 
+                                    name="guests"
+                                    value={formData.guests}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                                        <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div className="form-row">
+                            <div className="form-group">
+                                <label>Date</label>
+                                <input 
+                                    type="date" 
+                                    name="date"
+                                    value={formData.date}
+                                    onChange={handleChange}
+                                    required 
+                                    min={new Date().toISOString().split('T')[0]}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Time</label>
+                                <select 
+                                    name="time"
+                                    value={formData.time}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select time</option>
+                                    <option value="08:00">8:00 AM</option>
+                                    <option value="09:00">9:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="12:00">12:00 PM</option>
+                                    <option value="13:00">1:00 PM</option>
+                                    <option value="14:00">2:00 PM</option>
+                                    <option value="15:00">3:00 PM</option>
+                                    <option value="16:00">4:00 PM</option>
+                                    <option value="17:00">5:00 PM</option>
+                                    <option value="18:00">6:00 PM</option>
+                                    <option value="19:00">7:00 PM</option>
+                                    <option value="20:00">8:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div className="form-group">
+                            <label>Special Requests (Optional)</label>
+                            <textarea 
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                                rows="4"
+                                placeholder="Any dietary restrictions, special occasions, or preferences..."
+                            ></textarea>
+                        </div>
+                        
+                        <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                            Confirm Reservation
+                        </button>
+                    </form>
+                </section>
+            );
+        };
+
+        // About Component
+        const About = () => {
+            return (
+                <section className="section">
+                    <h2 className="section-title">Our Story</h2>
+                    <p className="section-subtitle">A journey of passion and dedication</p>
+                    
+                    <div style={{ maxWidth: '800px', margin: '0 auto', fontSize: '1.15rem', lineHeight: '1.8', color: 'var(--coffee)' }}>
+                        <p style={{ marginBottom: '1.5rem' }}>
+                            Founded in 2015, Infinite Café began as a dream to create a space where time slows down and every moment becomes memorable. Our founder, inspired by travels across Europe's finest coffee houses, envisioned a place that combines artisanal craftsmanship with warm hospitality.
+                        </p>
+                        <p style={{ marginBottom: '1.5rem' }}>
+                            Today, we're proud to serve our community with the finest single-origin coffees, handcrafted pastries, and wholesome meals. Every bean is carefully selected, every recipe perfected, and every detail considered to ensure your experience is nothing short of extraordinary.
+                        </p>
+                        <p>
+                            At Infinite Café, we believe in sustainability, quality, and the power of connection. Whether you're here for a quick espresso, a leisurely brunch, or a cozy evening with friends, we're honored to be part of your infinite moments.
+                        </p>
+                    </div>
+
+                    <Features />
+                </section>
+            );
+        };
+
+        // Cart Component
+        const Cart = ({ isOpen, onClose, items, onRemoveItem, onCheckout }) => {
+            const total = items.reduce((sum, item) => sum + item.price, 0);
+
+            return (
+                <div className={`cart-sidebar ${isOpen ? 'open' : ''}`}>
+                    <div className="cart-header">
+                        <h2>Your Cart</h2>
+                        <button className="close-cart" onClick={onClose}>×</button>
+                    </div>
+                    
+                    <div className="cart-items">
+                        {items.length === 0 ? (
+                            <div className="empty-cart">
+                                <p>Your cart is empty</p>
+                                <p style={{ fontSize: '3rem' }}>🛒</p>
+                            </div>
+                        ) : (
+                            items.map((item, index) => (
+                                <div key={index} className="cart-item">
+                                    <div className="cart-item-info">
+                                        <h4>{item.name}</h4>
+                                        <span className="cart-item-price">${item.price.toFixed(2)}</span>
+                                    </div>
+                                    <button className="remove-item" onClick={() => onRemoveItem(index)}>
+                                        ×
+                                    </button>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                    
+                    {items.length > 0 && (
+                        <div className="cart-footer">
+                            <div className="cart-total">
+                                <span>Total:</span>
+                                <span>${total.toFixed(2)}</span>
+                            </div>
+                            <button className="checkout-btn" onClick={onCheckout}>
+                                Proceed to Checkout
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // Footer Component
+        const Footer = () => {
+            return (
+                <footer className="footer">
+                    <div className="footer-content">
+                        <div className="footer-section">
+                            <h3>Infinite Café</h3>
+                            <p>Where time meets taste, and every moment is crafted to perfection.</p>
+                            <div className="social-links">
+                                <div className="social-icon">📘</div>
+                                <div className="social-icon">📷</div>
+                                <div className="social-icon">🐦</div>
+                                <div className="social-icon">📍</div>
+                            </div>
+                        </div>
+                        
+                        <div className="footer-section">
+                            <h3>Hours</h3>
+                            <p>Monday - Friday: 7am - 10pm</p>
+                            <p>Saturday: 8am - 11pm</p>
+                            <p>Sunday: 8am - 9pm</p>
+                        </div>
+                        
+                        <div className="footer-section">
+                            <h3>Contact</h3>
+                            <p>123 Brew Street</p>
+                            <p>Ahmedabad, Gujarat 380001</p>
+                            <p>Phone: +91 79 1234 5678</p>
+                            <p>Email: hello@infinitecafe.com</p>
+                        </div>
+                        
+                        <div className="footer-section">
+                            <h3>Quick Links</h3>
+                            <a href="#menu">Menu</a>
+                            <a href="#reservations">Reservations</a>
+                            <a href="#about">About Us</a>
+                            <a href="#careers">Careers</a>
+                        </div>
+                    </div>
+                    
+                    <div className="footer-bottom">
+                        <p>© 2026 Infinite Café. All rights reserved. Crafted with ❤️ and ☕</p>
+                    </div>
+                </footer>
+            );
+        };
+
+        // Main App Component
+        const App = () => {
+            const [currentPage, setCurrentPage] = useState('home');
+            const [cartItems, setCartItems] = useState([]);
+            const [cartOpen, setCartOpen] = useState(false);
+
+            const handleAddToCart = (item) => {
+                setCartItems([...cartItems, item]);
+                alert(`${item.name} added to cart!`);
+            };
+
+            const handleRemoveItem = (index) => {
+                setCartItems(cartItems.filter((_, i) => i !== index));
+            };
+
+            const handleCheckout = () => {
+                alert(`Checkout total: $${cartItems.reduce((sum, item) => sum + item.price, 0).toFixed(2)}\n\nThank you for your order! We'll prepare it with love.`);
+                setCartItems([]);
+                setCartOpen(false);
+            };
+
+            const renderPage = () => {
+                switch(currentPage) {
+                    case 'home':
+                        return (
+                            <>
+                                <Hero onNavigate={setCurrentPage} />
+                                <Features />
+                            </>
+                        );
+                    case 'menu':
+                        return <Menu onAddToCart={handleAddToCart} />;
+                    case 'reservations':
+                        return <Reservations />;
+                    case 'about':
+                        return <About />;
+                    default:
+                        return <Hero onNavigate={setCurrentPage} />;
+                }
+            };
+
+            return (
+                <div className="app">
+                    <BackgroundAnimation />
+                    <Navigation 
+                        onNavigate={setCurrentPage} 
+                        cartCount={cartItems.length}
+                        onCartToggle={() => setCartOpen(!cartOpen)}
+                    />
+                    {renderPage()}
+                    <Cart 
+                        isOpen={cartOpen}
+                        onClose={() => setCartOpen(false)}
+                        items={cartItems}
+                        onRemoveItem={handleRemoveItem}
+                        onCheckout={handleCheckout}
+                    />
+                    <Footer />
+                </div>
+            );
+        };
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
